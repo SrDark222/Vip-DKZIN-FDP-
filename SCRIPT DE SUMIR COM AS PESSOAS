@@ -1,0 +1,140 @@
+local Gui = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local Box = Instance.new("TextBox")
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+local Label = Instance.new("TextLabel")
+local UITextSizeConstraint_2 = Instance.new("UITextSizeConstraint")
+local Button = Instance.new("TextButton")
+local UITextSizeConstraint_3 = Instance.new("UITextSizeConstraint")
+
+Gui.Name = "Gui"
+Gui.Parent = gethui()
+Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Main.Name = "Main"
+Main.Parent = Gui
+Main.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Main.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Main.BorderSizePixel = 0
+Main.Position = UDim2.new(0.335954279, 0, 0.542361975, 0)
+Main.Size = UDim2.new(0.240350261, 0, 0.166880623, 0)
+Main.Active = true
+Main.Draggable = true
+
+Box.Name = "Box"
+Box.Parent = Main
+Box.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Box.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Box.BorderSizePixel = 0
+Box.Position = UDim2.new(0.0980926454, 0, 0.218712583, 0)
+Box.Size = UDim2.new(0.801089942, 0, 0.364963502, 0)
+Box.FontFace = Font.new("rbxasset://fonts/families/SourceSansSemibold.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Box.PlaceholderText = "Jogador alvo 👺"
+Box.Text = ""
+Box.TextColor3 = Color3.fromRGB(255, 0, 0)
+Box.TextScaled = true
+Box.TextSize = 31.000
+Box.TextWrapped = true
+
+UITextSizeConstraint.Parent = Box
+UITextSizeConstraint.MaxTextSize = 31
+
+Label.Name = "Label"
+Label.Parent = Main
+Label.BackgroundColor3 = Color3.fromRGB(95, 95, 95)
+Label.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Label.BorderSizePixel = 0
+Label.Size = UDim2.new(1, 0, 0.160583943, 0)
+Label.FontFace = Font.new("rbxasset://fonts/families/Nunito.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Label.Text = "script vip 💎 | by dkzin 🇪🇬"
+Label.TextColor3 = Color3.fromRGB(255, 0, 0)
+Label.TextScaled = true
+Label.TextSize = 14.000
+Label.TextWrapped = true
+
+UITextSizeConstraint_2.Parent = Label
+UITextSizeConstraint_2.MaxTextSize = 21
+
+Button.Name = "Button"
+Button.Parent = Main
+Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Button.BorderSizePixel = 0
+Button.Position = UDim2.new(0.183284417, 0, 0.656760991, 0)
+Button.Size = UDim2.new(0.629427791, 0, 0.277372271, 0)
+Button.Font = Enum.Font.Nunito
+Button.Text = "desligado | 🔴"
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.TextScaled = true
+Button.TextSize = 28.000
+Button.TextWrapped = true
+
+UITextSizeConstraint_3.Parent = Button
+UITextSizeConstraint_3.MaxTextSize = 28
+
+-- Funções do script
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+
+local function Notify(title, content)
+    OrionLib:MakeNotification({
+        Name = title,
+        Content = content,
+        Image = "rbxassetid://4483345998",
+        Time = 5
+    })
+end
+
+local function getPlayerByNick(nick)
+    local lowerNick = string.lower(nick)
+    for _, player in ipairs(Players:GetPlayers()) do
+        if string.find(string.lower(player.Name), lowerNick) or string.find(string.lower(player.DisplayName), lowerNick) then
+            return player
+        end
+    end
+end
+
+local player = nil
+local character = nil
+local humanoidRootPart = nil
+
+Box.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        player = getPlayerByNick(Box.Text)
+        if player then
+            Box.Text = player.Name
+            Notify("Sucesso", "Jogador encontrado: " .. player.Name)
+        else
+            Notify("Erro", "Nenhum jogador encontrado com esse nick.")
+        end
+    end
+end)
+
+local function activateBlackHole()
+    local success, err = pcall(function()
+        if not player or not player.Character then
+            Notify("Erro", "Nenhum alvo selecionado 🇪🇬🎭.")
+            return
+        end
+        character = player.Character
+        humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+        humanoidRootPart.Anchored = true
+        Notify("Sucesso", player.Name .. " foi ancorado ao script VIP.")
+        character:Destroy()
+        Notify("Alvo morto", player.Name .. " foi de Vasco 🤣🤣.")
+    end)
+    if not success then
+        Notify("Erro", "Ocorreu um erro: " .. tostring(err))
+    end
+end
+
+Button.MouseButton1Click:Connect(function()
+    activateBlackHole()
+end)
+
+-- By dkzin 🇪🇬🤣
